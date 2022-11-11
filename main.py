@@ -1,8 +1,12 @@
-from tkinter import *
-from tkinter import ttk
-root = Tk()
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
-root.mainloop()
+import colormath
+import pandas
+
+class color():
+    def __init__(self, name, parent_name, rgb, hex_code):
+        self.name = name
+        self.parent_name = parent_name
+        self.rgb = rgb
+        self.hex_code = hex_code
+    
+df = pandas.read_csv("colordata.csv")
+print(df)
