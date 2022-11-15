@@ -1,7 +1,7 @@
 import pandas
+from tkinter import *
 from PIL import Image, ImageGrab, ImageStat
 from color_stuffs import *
-
 
 colors = pandas.read_csv("colordata.csv")
 colors_len = len(colors)
@@ -19,8 +19,28 @@ def find_closest(start_color):
             min_color_distance = current_distance
     return min_color
 
-pic = ImageGrab.grabclipboard()
-average_lab = rgb_to_lab(ImageStat.Stat(pic).mean[:-1])
+def get_pic_rgb():
+    return ImageStat.Stat(ImageGrab.grabclipboard()).mean[:-1]
 
-print(average_lab)
-print(colors.iloc[find_closest(average_lab)])
+def on_click():
+    try:
+        closest_color = colors.iloc[find_closest(rgb_to_lab(get_pic_rgb()))]
+        output_color.config(text=f"Color Name: {closest_color['Name']}\nParent Name: {closest_color['Parent Color']}")
+    except:
+        print("Non-image copied to clipboard")
+
+window = Tk()
+frame = Frame(window)
+window.title("CT2")
+window.geometry("300x500")
+window.resizable(False,False)
+frame.pack(fill=BOTH, expand=True)
+
+btn = Button(frame, text="TEST", command=on_click)
+output_color = Label(frame, text="Test", fg="#000000", state=DISABLED)
+
+output_color.pack(side=TOP, pady=10)
+btn.pack(side=BOTTOM, pady=10)
+
+
+window.mainloop()
