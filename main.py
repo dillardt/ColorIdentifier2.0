@@ -32,7 +32,7 @@ def on_click():
 window = Tk()
 frame = Frame(window)
 window.title("CT2")
-window.geometry("300x500")
+window.geometry("200x100")
 window.resizable(False,False)
 frame.pack(fill=BOTH, expand=True)
 
