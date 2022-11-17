@@ -1,5 +1,6 @@
 import pandas
 import base64
+import pyperclip
 from tkinter import *
 from PIL import Image, ImageGrab, ImageStat
 from color_stuffs import *
@@ -21,17 +22,20 @@ def find_closest(start_color):
     return min_color
 
 def get_pic_rgb():
-    return ImageStat.Stat(ImageGrab.grabclipboard()).mean[:-1]
+    try:
+        return ImageStat.Stat(ImageGrab.grabclipboard()).mean[:-1]
+    except:
+        return tuple(eval(pyperclip.paste()[4:-1]))
 
 def on_click():
     try:
         tested_color = get_pic_rgb()
-        tested_color_square.config(bg=f"#{''.join(hex(int(x))[2:].zfill(2) for x in tested_color)}")
-        closest_color = colors.iloc[find_closest(rgb_to_lab(tested_color))]
-        result_color_sqaure.config(bg=f"#{closest_color['Hex Code'][2:]}")
-        output_color.config(text=f"Color Name: {closest_color['Name']}\nParent Name: {closest_color['Parent Color']}")
     except:
-        pass
+        return
+    tested_color_square.config(bg=f"#{''.join(hex(int(x))[2:].zfill(2) for x in tested_color)}")
+    closest_color = colors.iloc[find_closest(rgb_to_lab(tested_color))]
+    result_color_sqaure.config(bg=f"#{closest_color['Hex Code'][2:]}")
+    output_color.config(text=f"Color Name: {closest_color['Name']}\nParent Name: {closest_color['Parent Color']}")
 
 window = Tk()
 frame = Frame(window)
